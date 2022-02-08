@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-configmap
+spec:
+  selector:
+    matchLabels:
+      app: node-configmap
+  template:
+    metadata:
+      labels:
+        app: node-configmap
+    spec:
+      containers:
+      - name: node-configmap
+        image: node-configmap
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 9000
+
+        # reference configMap Data at appropriate path
+        volumeMounts:
+          - name: app-config-vol
+            mountPath: /etc/config
+
+        # map env variable data to configmap property
+        env:
+        - name: ENEMIES
+          valueFrom:
+            configMapKeyRef:
+              name: app-settings
+              key: enemies
+
+        # map env all at once
+        envFrom:
+        - configMapRef:
+            name: app-settings
+
+        #define volume that contains configMap data
+      volumes:
+      - name: app-config-vol
+        configMap:
+          name: app-settings

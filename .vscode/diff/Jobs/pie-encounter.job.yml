@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pie-encounter
+spec:
+  completions: 4
+  parallelism: 2
+  activeDeadlineSeconds: 240
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      name: pie-encounter
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: pie-encounter
+        image: perl
+        command:
+         - "sh"
+         - "-c"
+         - "echo 'scale=1000; 4*a(1)' | bc -l;sleep 2;"

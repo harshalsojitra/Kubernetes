@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ps-pvc
+spec:
+  resources:
+    requests:
+      storage: 0.5Gi
+  volumeMode: Filesystem
+  storageClassName: ps-fast
+  accessModes:
+    - ReadWriteOnce
